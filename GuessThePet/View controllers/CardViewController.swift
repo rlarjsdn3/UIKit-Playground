@@ -45,9 +45,6 @@ class CardViewController: UIViewController {
     titleLabel.text = petCard?.description
     cardView.layer.cornerRadius = CardViewController.cardCornerRadius
     cardView.layer.masksToBounds = true
-    view.addSubview(button)
-    button.setTitle("dddd", for: .normal)
-    button.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -72,5 +69,12 @@ extension CardViewController: SegueHandlerType {
 extension CardViewController: UIViewControllerTransitioningDelegate {
   func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
     return FlipPresentAnimationController(originFrame: cardView.frame)
+  }
+  
+  func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+    guard let _ = dismissed as? RevealViewController else {
+      return nil
+    }
+    return FlipDismissAnimationController(destinationFrame: cardView.frame)
   }
 }
