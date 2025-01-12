@@ -19,6 +19,7 @@
 		BB3B33DB1B4056B700B5C810 /* Pets.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB3B33DA1B4056B700B5C810 /* Pets.plist */; };
 		BB3B33DD1B4064E600B5C810 /* PetCardStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3B33DC1B4064E600B5C810 /* PetCardStore.swift */; };
 		BBC248791B4D8EFD00F4C642 /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC248781B4D8EFD00F4C642 /* AnimationHelper.swift */; };
+		C721C4962D33D72A00F0FE2D /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C721C4952D33D72A00F0FE2D /* SwipeInteractionController.swift */; };
 		C77A43BC2D32478F002FF3FC /* FlipDismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77A43BB2D32478F002FF3FC /* FlipDismissAnimationController.swift */; };
 		C77E41C42D322EE700EAC71B /* FlipPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77E41C32D322EE700EAC71B /* FlipPresentAnimationController.swift */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,7 @@
 		BB3B33DA1B4056B700B5C810 /* Pets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pets.plist; sourceTree = "<group>"; };
 		BB3B33DC1B4064E600B5C810 /* PetCardStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PetCardStore.swift; sourceTree = "<group>"; };
 		BBC248781B4D8EFD00F4C642 /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
+		C721C4952D33D72A00F0FE2D /* SwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 		C77A43BB2D32478F002FF3FC /* FlipDismissAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipDismissAnimationController.swift; sourceTree = "<group>"; };
 		C77E41C32D322EE700EAC71B /* FlipPresentAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipPresentAnimationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +148,7 @@
 			children = (
 				C77E41C32D322EE700EAC71B /* FlipPresentAnimationController.swift */,
 				C77A43BB2D32478F002FF3FC /* FlipDismissAnimationController.swift */,
+				C721C4952D33D72A00F0FE2D /* SwipeInteractionController.swift */,
 			);
 			path = "Animation controllers";
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				BB3B33A81B40386700B5C810 /* AppDelegate.swift in Sources */,
 				18F4A6591F635A6D0076435C /* StoryboardSupport.swift in Sources */,
 				BB3B33D11B4039FB00B5C810 /* CardViewController.swift in Sources */,
+				C721C4962D33D72A00F0FE2D /* SwipeInteractionController.swift in Sources */,
 				BB3B33CF1B4039A600B5C810 /* PageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

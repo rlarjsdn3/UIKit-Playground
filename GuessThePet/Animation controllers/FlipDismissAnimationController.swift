@@ -31,9 +31,11 @@ import UIKit
 class FlipDismissAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
   
   private let destinationFrame: CGRect
+  let interactionController: SwipeInteractionController?
   
-  init(destinationFrame: CGRect) {
+  init(destinationFrame: CGRect, interactionController: SwipeInteractionController?) {
     self.destinationFrame = destinationFrame
+    self.interactionController = interactionController
   }
   
   func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
@@ -53,7 +55,6 @@ class FlipDismissAnimationController: NSObject, UIViewControllerAnimatedTransiti
     let containerView = transitionContext.containerView
     containerView.insertSubview(toVC.view, at: 0)
     containerView.addSubview(snapshot)
-    
     fromVC.view.isHidden = true
     
     AnimationHelper.perspectiveTransform(for: containerView)
