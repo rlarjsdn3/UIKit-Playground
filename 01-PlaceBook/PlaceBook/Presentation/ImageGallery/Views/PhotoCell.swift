@@ -16,7 +16,7 @@ final class PhotoCell: UICollectionViewCell {
     
     // MARK: - Views
     
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
@@ -24,7 +24,7 @@ final class PhotoCell: UICollectionViewCell {
         return image
     }()
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let title = UILabel()
         title.numberOfLines = 1
         title.font = .boldSystemFont(ofSize: 24)
@@ -73,5 +73,11 @@ final class PhotoCell: UICollectionViewCell {
         UIView.animate(withDuration: 0.1) {
             self.transform = CGAffineTransformMakeScale(scale, scale)
         }
+    }
+}
+
+extension PhotoCell {
+    func getImageView() -> UIImageView {
+        return imageView
     }
 }

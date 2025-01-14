@@ -19,6 +19,7 @@ final class ImageDetailViewController: UIViewController {
     
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
+        scroll.contentInsetAdjustmentBehavior = .never
         return scroll
     }()
     
@@ -59,9 +60,6 @@ final class ImageDetailViewController: UIViewController {
     
     lazy var closeButton: UIButton = {
         let button = UIButton(type: .close)
-        button.backgroundColor = .darkGray.withAlphaComponent(0.75)
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(tappedCloseButton(_:)), for: .touchUpInside)
         return button
     }()
@@ -130,7 +128,7 @@ final class ImageDetailViewController: UIViewController {
     // MARK: - Private
     
     private func update() {
-        imageView.image = UIImage(named: item?.image ?? "")
+        imageView.image = UIImage(named: item!.image)
         titleLabel.text = item?.title
         textView.text = item?.description
     }

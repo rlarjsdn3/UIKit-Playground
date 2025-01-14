@@ -9,6 +9,11 @@ import UIKit
 
 final class ImageGalleryViewController: UICollectionViewController {
 
+    // MARK: - Properties
+    
+    var selectedCell: PhotoCell?
+    
+    
     // MARK: - init
     
     convenience init() {
@@ -77,20 +82,41 @@ extension ImageGalleryViewController {
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 didSelectItemAt indexPath: IndexPath) {
         let vc = ImageDetailViewController()
-        vc.modalPresentationStyle = .fullScreen
+        vc.transitioningDelegate = self
+        vc.modalPresentationStyle = .custom
         vc.item = AppData.photos[indexPath.item]
+        selectedCell = collectionView.cellForItem(at: indexPath)
         present(vc, animated: true)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCell else { return }
+    override func collectionView(_ collectionView: UICollectionView,
+                                 didHighlightItemAt indexPath: IndexPath) {
+        guard let cell: PhotoCell = collectionView.cellForItem(at: indexPath) else { return }
         cell.adjustScale(to: 0.95)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? PhotoCell else { return }
+    override func collectionView(_ collectionView: UICollectionView,
+                                 didUnhighlightItemAt indexPath: IndexPath) {
+        guard let cell: PhotoCell = collectionView.cellForItem(at: indexPath) else { return }
         cell.adjustScale(to: 1.0)
+    }
+}
+
+extension ImageGalleryViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController,
+                             presenting: UIViewController,
+                             source: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        return ImageDetailPresentAnimator()
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        guard let _ = dismissed as? ImageDetailViewController else {
+            return nil
+        }
+        return ImageDetailDismissalAnimator()
     }
 }
