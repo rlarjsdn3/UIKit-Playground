@@ -32,6 +32,7 @@ final class ImageDetailPresentAnimator: NSObject, UIViewControllerAnimatedTransi
         toViewController.view.layoutIfNeeded()
         
         let fromViewImageFrame = fromImageView.convert(fromImageView.frame, to: containerView)
+        // (셀의 실제 이미지 뷰 대신) 셀의 스냅샷을 애니메이션
         fromImageSnapshotView.frame = fromViewImageFrame
 
         let toImageView = toViewController.imageView
@@ -40,6 +41,7 @@ final class ImageDetailPresentAnimator: NSObject, UIViewControllerAnimatedTransi
         toImageView.frame = fromViewImageFrame
 
         toViewController.view.alpha = 0
+        // 셀의 이미지를 숨김
         fromImageView.isHidden = true
         
         UIView.animate(

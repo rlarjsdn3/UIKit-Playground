@@ -28,11 +28,13 @@ final class ImageDetailDismissalAnimator: NSObject, UIViewControllerAnimatedTran
         let containerView = transitionContext.containerView
         
         let fromViewImageFrame = fromViewController.imageView.frame
-        
         let toViewImageFrame = toImageView.convert(toImageView.frame, to: containerView)
         toImageView.alpha = 0
+        // (표시될 때 숨긴) 셀의 이미지 뷰를 숨김 처리 해제
         toImageView.isHidden = false
+        // (표시될 때와 달리) 셀의 이미지 뷰를 직접 애니메이션
         toImageView.frame = fromViewImageFrame
+        // 숨김 처리된 셀의 이미지는 스냅샷이 불가능
         
         UIView.animate(
             springDuration: transitionDuration(using: transitionContext),
@@ -42,8 +44,7 @@ final class ImageDetailDismissalAnimator: NSObject, UIViewControllerAnimatedTran
             options: .curveEaseInOut
         ) {
             fromViewController.view.alpha = 0
-            
-            toImageView.alpha = 1
+
             toImageView.alpha = 1
             toImageView.frame = toViewImageFrame
         } completion: { _ in

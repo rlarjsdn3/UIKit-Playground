@@ -75,9 +75,3 @@ final class PhotoCell: UICollectionViewCell {
         }
     }
 }
-
-extension PhotoCell {
-    func getImageView() -> UIImageView {
-        return imageView
-    }
-}
