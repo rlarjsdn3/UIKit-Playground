@@ -31,14 +31,14 @@
                                 </constraints>
                                 <state key="normal" title="Back"/>
                                 <connections>
-                                    <action selector="back" destination="UiL-KD-B7R" eventType="touchUpInside" id="Viy-fT-LEq"/>
+                                    <action selector="back:" destination="UiL-KD-B7R" eventType="touchUpInside" id="yqv-LK-wFT"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g9b-iy-sg0">
                                 <rect key="frame" x="126" y="94" width="123" height="30"/>
                                 <state key="normal" title="Change password"/>
                                 <connections>
-                                    <action selector="chagePassword:" destination="UiL-KD-B7R" eventType="touchUpInside" id="yh4-0q-8y3"/>
+                                    <action selector="chagePassword:" destination="UiL-KD-B7R" eventType="touchUpInside" id="nne-Oj-Xer"/>
                                 </connections>
                             </button>
                         </subviews>

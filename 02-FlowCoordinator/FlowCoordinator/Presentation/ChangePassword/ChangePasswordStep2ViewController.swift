@@ -32,8 +32,10 @@ class ChangePasswordStep2ViewController: UIViewController, ChangePasswordStep2Vi
     // MARK: - Actions
     
     @IBAction func resetPassword(_ sender: Any) {
+        self.onResetPassword?()
     }
     
     @IBAction func back(_ sender: Any) {
+        self.onBack?()
     }
 }

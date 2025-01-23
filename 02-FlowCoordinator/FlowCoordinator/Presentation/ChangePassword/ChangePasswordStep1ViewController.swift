@@ -32,8 +32,10 @@ class ChangePasswordStep1ViewController: UIViewController,  ChangePasswordStep1V
     // MARK: - Actions
     
     @IBAction func nextStep(_ sender: Any) {
+        self.onNextStep?()
     }
     
     @IBAction func back(_ sender: Any) {
+        self.onBack?()
     }
 }

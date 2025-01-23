@@ -28,7 +28,7 @@
                                 <rect key="frame" x="167" y="617" width="41" height="30"/>
                                 <state key="normal" title="Finish"/>
                                 <connections>
-                                    <action selector="finish" destination="uCc-tQ-qca" eventType="touchUpInside" id="eBu-V4-SzC"/>
+                                    <action selector="finish:" destination="uCc-tQ-qca" eventType="touchUpInside" id="1Si-kE-D01"/>
                                 </connections>
                             </button>
                         </subviews>
