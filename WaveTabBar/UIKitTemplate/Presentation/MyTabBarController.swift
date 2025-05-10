@@ -11,22 +11,31 @@ class MyTabBarController: UITabBarController {
     
     let myTabBar = MyTabBar()
 
-    var myTabBarItems: [MyTabBarItem] = [] {
-        didSet { myTabBar.set(myTabBarItems) }
+    private var myTabBarItems: [MyTabBarItem] = [] {
+        didSet { myTabBar.setTabBarItems(myTabBarItems) }
     }
-    
+
     override var selectedIndex: Int {
         didSet { myTabBar.setSelctedTab(selectedIndex) }
     }
-    
+
+    override var viewControllers: [UIViewController]? {
+        didSet { configureTabBarItems() }
+    }
+
+    override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
+        super.setViewControllers(viewControllers, animated: animated)
+        configureTabBarItems()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
-    
-    override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
-        super.setViewControllers(viewControllers, animated: animated)
-        configureTabBarItems()
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        myTabBar.animateIntialState()
     }
     
     private func setupUI() {
@@ -46,12 +55,15 @@ class MyTabBarController: UITabBarController {
     
     private func configureTabBarItems() {
         if let items = viewControllers?.compactMap(\.tabBarItem) {
-            self.myTabBarItems = items.enumerated().map {
+            // Stack에 아이템을 모두 추가하여 렌더링한 후,
+            // selectedIndex를 지정해야 강조 색상이 올바르게 반영됩니다.
+            myTabBarItems = items.enumerated().map {
                 MyTabBarItem(
                     title: $1.title ?? "",
                     image: $1.image,
                     selectedImage: $1.selectedImage,
-                    index: $0
+                    tint: myTabBar.tintColor,
+                    tag: $0
                 )
             }
             selectedIndex = 0
@@ -61,8 +73,16 @@ class MyTabBarController: UITabBarController {
 
 extension MyTabBarController: MyTabBarDelegate {
     
-    func tabBar(_ tabBar: MyTabBar, didSelect button: MyTabBarItem, at index: Int) {
+    func tabBar(_ tabBar: MyTabBar, didSelect items: MyTabBarItem, at index: Int) {
         selectedIndex = index
+    }
+
+    func tabBar(_ tabBar: MyTabBar, refresh items: [MyTabBarItem]) {
+        // 강조 색상이 변경될 경우, 현재 선택된 아이템을 다시 로드하여
+        // 강조 색상이 올바르게 반영되도록 합니다.
+        if let selectedIndex = items.firstIndex(where: { $0 === myTabBarItems[selectedIndex] }) {
+            myTabBar.reloadTabBarItem(selectedIndex)
+        }
     }
 }
 
@@ -96,5 +116,7 @@ extension MyTabBarController: MyTabBarDelegate {
         [firstViewController, secondViewController, thirdViewController, fourthViewController],
         animated: false
     )
+    tabBarController.myTabBar.tintColor = .systemRed
+    tabBarController.myTabBar.tintColor = .systemBrown
     return tabBarController
 }

@@ -41,10 +41,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
         let tabBarController = MyTabBarController()
         tabBarController.setViewControllers(
-            [firstViewController, secondViewController, thirdViewController, /*fourthViewController*/],
+            [firstViewController, secondViewController, thirdViewController, fourthViewController],
             animated: false
         )
-        
+        tabBarController.myTabBar.tintColor = .systemPink
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            tabBarController.myTabBar.tintColor = .systemBrown
+        }
+
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

@@ -12,18 +12,20 @@ final class MyTabBarItem: UIButton {
     let title: String?
     let image: UIImage?
     let selectedImage: UIImage?
-    let index: Int
     var tint: UIColor?
+    let index: Int
     
     init(
         title: String?,
         image: UIImage? = nil,
         selectedImage: UIImage? = nil,
-        index: Int
+        tint: UIColor?,
+        tag index: Int,
     ) {
         self.title = title
         self.image = image
         self.selectedImage = selectedImage
+        self.tint = tint
         self.index = index
         super.init(frame: .zero)
         
@@ -57,9 +59,9 @@ extension MyTabBarItem {
     
     func applySelectionState(_ selectedIndex: Int) {
         if index == selectedIndex {
-            self.configuration?.attributedTitle = attributedTitle(.systemOrange)
-            self.configuration?.preferredSymbolConfigurationForImage = symbolConfiguration(.systemOrange)
-        
+            self.configuration?.attributedTitle = attributedTitle(tint ?? .black)
+            self.configuration?.preferredSymbolConfigurationForImage = symbolConfiguration(tint ?? .black)
+
             if let selectedImage = selectedImage {
                 self.setImage(selectedImage, for: .normal)
             }
