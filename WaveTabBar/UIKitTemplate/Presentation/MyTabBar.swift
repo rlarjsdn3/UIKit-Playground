@@ -19,7 +19,10 @@ final class MyTabBar: UIView {
 
     private let container = UIView()
     private let stackView = UIStackView()
-    private var tabBarItems: [MyTabBarItem] = []
+    // 
+    private var tabBarItems: [MyTabBarItem] = [] {
+        didSet { self.layoutIfNeeded() }
+    }
 
     private let circle = Circle()
     private let wavyBottom = WavyBottomShape()
@@ -43,7 +46,11 @@ final class MyTabBar: UIView {
     // 동적인 레이아웃 환경에서 마스킹이 항상 올바르게 유지되도록 보장하기 위함입니다.
     override func layoutSubviews() {
         super.layoutSubviews()
-        applyWavyBottomMask()
+
+        if let first = tabBarItems.first {
+            applyWavyBottomMask(first.center.x)
+            animateCircle(to: first.center.x, withDuration: 0)
+        }
     }
 
     private func setupUI() {
@@ -98,10 +105,10 @@ final class MyTabBar: UIView {
         }
     }
 
-    private func applyWavyBottomMask() {
+    private func applyWavyBottomMask(_ offsetX: CGFloat) {
         //
         let maskLayer = CAShapeLayer()
-        maskLayer.path = wavyBottom.createPath(self.bounds, offsetX: 0).cgPath
+        maskLayer.path = wavyBottom.createPath(self.bounds, offsetX: offsetX).cgPath
         maskLayer.fillColor = UIColor.black.cgColor
         maskLayer.frame = self.bounds
         //
@@ -145,7 +152,7 @@ final class MyTabBar: UIView {
         }
     }
 
-    // Layer와 관련된 애니메이션은 모두 CAAnimation을 사용한다는 점을 기억하세요!
+    // Layer와 관련된 애니메이션은 모두 CAAnimation으로 해야 한다는 점을 기억하세요!
     private func animateWavyBottom(
         to targetOffsetX: CGFloat,
         withDuration duration: TimeInterval = 0.25

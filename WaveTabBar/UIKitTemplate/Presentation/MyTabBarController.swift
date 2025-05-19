@@ -19,10 +19,6 @@ class MyTabBarController: UITabBarController {
         didSet { myTabBar.setSelctedTab(selectedIndex) }
     }
 
-    override var viewControllers: [UIViewController]? {
-        didSet { configureTabBarItems() }
-    }
-
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
         super.setViewControllers(viewControllers, animated: animated)
         configureTabBarItems()
@@ -117,6 +113,5 @@ extension MyTabBarController: MyTabBarDelegate {
         animated: false
     )
     tabBarController.myTabBar.tintColor = .systemRed
-    tabBarController.myTabBar.tintColor = .systemBrown
     return tabBarController
 }

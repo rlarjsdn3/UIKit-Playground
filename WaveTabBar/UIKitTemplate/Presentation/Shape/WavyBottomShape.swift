@@ -52,3 +52,8 @@ final class WavyBottomShape: UIView {
         return path
     }
 }
+
+
+#Preview {
+    WavyBottomShape(offsetX: 200)
+}
