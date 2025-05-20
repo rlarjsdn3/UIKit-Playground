@@ -1,5 +1,5 @@
 //
-//  WavyBottomShape.swift
+//  Wavy.swift
 //  UIKitTemplate
 //
 //  Created by 김건우 on 5/10/25.
@@ -7,10 +7,13 @@
 
 import UIKit
 
-final class WavyBottomShape: UIView {
+final class Wavy: UIView {
     
+    /// <#Description#>
     private var offsetX: CGFloat
     
+    /// <#Description#>
+    /// - Parameter offsetX: <#offsetX description#>
     init(offsetX: CGFloat = 0) {
         self.offsetX = offsetX
         super.init(frame: .zero)
@@ -30,6 +33,11 @@ final class WavyBottomShape: UIView {
         self.layer.addSublayer(shapeLayer)
     }
 
+    /// <#Description#>
+    /// - Parameters:
+    ///   - rect: <#rect description#>
+    ///   - midX: <#midX description#>
+    /// - Returns: <#description#>
     func createPath(_ rect: CGRect, offsetX midX: CGFloat) -> UIBezierPath {
         let path = UIBezierPath()
         path.move(to: CGPoint(x: rect.maxX, y: rect.maxY))
@@ -55,5 +63,5 @@ final class WavyBottomShape: UIView {
 
 
 #Preview {
-    WavyBottomShape(offsetX: 200)
+    Wavy(offsetX: 200)
 }

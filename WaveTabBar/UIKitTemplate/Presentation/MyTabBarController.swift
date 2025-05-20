@@ -7,18 +7,28 @@
 
 import UIKit
 
-class MyTabBarController: UITabBarController {
+final class MyTabBarController: UITabBarController {
     
-    let myTabBar = MyTabBar()
+    ///
+    private let myTabBar = MyTabBar()
 
-    private var myTabBarItems: [MyTabBarItem] = [] {
-        didSet { myTabBar.setTabBarItems(myTabBarItems) }
+    ///
+    private var myTabBarItems: [MyTabBarItem] = []
+    
+    /// <#Description#>
+    var tintColor: UIColor = .label {
+        didSet { configureTabBarTint() }
     }
-
+    
+    /// <#Description#>
     override var selectedIndex: Int {
-        didSet { myTabBar.setSelctedTab(selectedIndex) }
+        didSet { myTabBar.updateSelctedTab(selectedIndex) }
     }
-
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - viewControllers: <#viewControllers description#>
+    ///   - animated: <#animated description#>
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
         super.setViewControllers(viewControllers, animated: animated)
         configureTabBarItems()
@@ -31,9 +41,27 @@ class MyTabBarController: UITabBarController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        myTabBar.animateIntialState()
+        configureIntialState()
     }
-    
+
+    /// <#Description#>
+    /// - Parameters:
+    ///   - hidden: <#hidden description#>
+    ///   - animated: <#animated description#>
+    override func setTabBarHidden(_ hidden: Bool, animated: Bool = true) {
+        if hidden {
+            UIView.animate(withDuration: animated ? 0.25 : 0) { [self] in
+                let yDistance = view.frame.maxY - myTabBar.frame.origin.y
+                self.myTabBar.transform = CGAffineTransform(translationX: 0, y: yDistance)
+            }
+        } else {
+            UIView.animate(withDuration: animated ? 0.25 : 0) { [self] in
+                self.myTabBar.transform = .identity
+            }
+        }
+    }
+
+    /// <#Description#>
     private func setupUI() {
         self.tabBar.isHidden = true
         view.addSubview(myTabBar)
@@ -48,9 +76,15 @@ class MyTabBarController: UITabBarController {
             myTabBar.heightAnchor.constraint(equalToConstant: 65)
         ])
     }
+}
+
+
+extension MyTabBarController {
     
+    /// <#Description#>
     private func configureTabBarItems() {
         if let items = viewControllers?.compactMap(\.tabBarItem) {
+            selectedIndex = 0
             // Stack에 아이템을 모두 추가하여 렌더링한 후,
             // selectedIndex를 지정해야 강조 색상이 올바르게 반영됩니다.
             myTabBarItems = items.enumerated().map {
@@ -62,8 +96,19 @@ class MyTabBarController: UITabBarController {
                     tag: $0
                 )
             }
-            selectedIndex = 0
+            myTabBar.updateTabBarItems(myTabBarItems)
         }
+    }
+    
+    /// <#Description#>
+    private func configureTabBarTint() {
+        myTabBar.updateTintColor(tintColor)
+        myTabBar.reloadTabBarItem(selectedIndex)
+    }
+    
+    /// <#Description#>
+    private func configureIntialState() {
+        myTabBar.animateIntialState()
     }
 }
 
@@ -71,14 +116,6 @@ extension MyTabBarController: MyTabBarDelegate {
     
     func tabBar(_ tabBar: MyTabBar, didSelect items: MyTabBarItem, at index: Int) {
         selectedIndex = index
-    }
-
-    func tabBar(_ tabBar: MyTabBar, refresh items: [MyTabBarItem]) {
-        // 강조 색상이 변경될 경우, 현재 선택된 아이템을 다시 로드하여
-        // 강조 색상이 올바르게 반영되도록 합니다.
-        if let selectedIndex = items.firstIndex(where: { $0 === myTabBarItems[selectedIndex] }) {
-            myTabBar.reloadTabBarItem(selectedIndex)
-        }
     }
 }
 
@@ -112,6 +149,7 @@ extension MyTabBarController: MyTabBarDelegate {
         [firstViewController, secondViewController, thirdViewController, fourthViewController],
         animated: false
     )
-    tabBarController.myTabBar.tintColor = .systemRed
+    tabBarController.tintColor = .systemRed
+//    tabBarController.setTabBarHidden(true)
     return tabBarController
 }

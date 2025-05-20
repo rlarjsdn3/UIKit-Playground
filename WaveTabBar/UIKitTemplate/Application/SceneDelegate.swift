@@ -44,10 +44,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             [firstViewController, secondViewController, thirdViewController, fourthViewController],
             animated: false
         )
-        tabBarController.myTabBar.tintColor = .systemPink
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            tabBarController.myTabBar.tintColor = .systemBrown
+        tabBarController.tintColor = .label
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.33) {
+            tabBarController.setTabBarHidden(true, animated: true)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.33) {
+                tabBarController.setTabBarHidden(false, animated: true)
+            }
         }
 
         window = UIWindow(windowScene: windowScene)

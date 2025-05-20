@@ -9,18 +9,18 @@ import UIKit
 
 final class MyTabBarItem: UIButton {
     
-    let title: String?
-    let image: UIImage?
-    let selectedImage: UIImage?
-    var tint: UIColor?
-    let index: Int
+    private let title: String?
+    private let image: UIImage?
+    private let selectedImage: UIImage?
+    private var tint: UIColor?
+    private let index: Int
     
     init(
         title: String?,
         image: UIImage? = nil,
         selectedImage: UIImage? = nil,
         tint: UIColor?,
-        tag index: Int,
+        tag index: Int
     ) {
         self.title = title
         self.image = image
@@ -56,6 +56,10 @@ final class MyTabBarItem: UIButton {
 }
 
 extension MyTabBarItem {
+    
+    func setTintColor(_ tint: UIColor) {
+        self.tint = tint
+    }
     
     func applySelectionState(_ selectedIndex: Int) {
         if index == selectedIndex {

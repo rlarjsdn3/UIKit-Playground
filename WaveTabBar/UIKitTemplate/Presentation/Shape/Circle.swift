@@ -8,7 +8,8 @@
 import UIKit
 
 final class Circle: UIView {
-
+    
+    /// <#Description#>
     override var tintColor: UIColor? {
         didSet { self.setNeedsDisplay() }
     }
@@ -23,7 +24,10 @@ final class Circle: UIView {
         shapeLayer.fillColor = tintColor?.cgColor
         self.layer.addSublayer(shapeLayer)
     }
-
+    
+    /// <#Description#>
+    /// - Parameter rect: <#rect description#>
+    /// - Returns: <#description#>
     func createPath(_ rect: CGRect) -> UIBezierPath {
         return UIBezierPath(ovalIn: rect)
     }

@@ -9,29 +9,36 @@ import UIKit
 
 @MainActor
 protocol MyTabBarDelegate: AnyObject {
-    //
-    func tabBar(_ tabBar: MyTabBar, didSelect item: MyTabBarItem, at index: Int)
-    //
-    func tabBar(_ tabBar: MyTabBar, refresh items: [MyTabBarItem])
+    /// <#Description#>
+    /// - Parameters:
+    ///   - tabBar: <#tabBar description#>
+    ///   - item: <#item description#>
+    ///   - index: <#index description#>
+    func tabBar(
+        _ tabBar: MyTabBar,
+        didSelect item: MyTabBarItem,
+        at index: Int
+    )
 }
 
 final class MyTabBar: UIView {
 
     private let container = UIView()
     private let stackView = UIStackView()
-    // 
+    
+    /// <#Description#>
     private var tabBarItems: [MyTabBarItem] = [] {
         didSet { self.layoutIfNeeded() }
     }
-
+    
+    /// <#Description#>
     private let circle = Circle()
-    private let wavyBottom = WavyBottomShape()
-
+    
+    /// <#Description#>
+    private let wavyBottom = Wavy()
+    
+    /// <#Description#>
     weak var delegate: (any MyTabBarDelegate)?
-
-    override var tintColor: UIColor? {
-        didSet { updateTintColor() }
-    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,17 +49,20 @@ final class MyTabBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // `layoutSubviews`에서 마스킹을 적용하는 것은
-    // 동적인 레이아웃 환경에서 마스킹이 항상 올바르게 유지되도록 보장하기 위함입니다.
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        #warning("탭뷰가 hidden되었다가 다시 보일 때, 버튼 위치가 이상해지는 문제 수정")
+        // 탭뷰가 사라질 때 layoutsubviews가 한번 호출됨
+        // 다시 나타날 때도 또 호출되고 
+        print(#function)
         if let first = tabBarItems.first {
             applyWavyBottomMask(first.center.x)
             animateCircle(to: first.center.x, withDuration: 0)
         }
+//        animateIntialState()
     }
-
+    
+    /// <#Description#>
     private func setupUI() {
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 0.22
@@ -91,7 +101,9 @@ final class MyTabBar: UIView {
             circle.topAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: 10)
         ])
     }
-
+    
+    /// <#Description#>
+    /// - Parameter sender: <#sender description#>
     @objc private func handleTabBarItemTap(_ sender: MyTabBarItem) {
         delegate?.tabBar(self, didSelect: sender, at: sender.tag)
 
@@ -104,7 +116,9 @@ final class MyTabBar: UIView {
             animateTabBarItem(item.tag, to: 0)
         }
     }
-
+    
+    /// <#Description#>
+    /// - Parameter offsetX: <#offsetX description#>
     private func applyWavyBottomMask(_ offsetX: CGFloat) {
         //
         let maskLayer = CAShapeLayer()
@@ -114,15 +128,25 @@ final class MyTabBar: UIView {
         //
         container.layer.mask = maskLayer
     }
+}
 
+extension MyTabBar {
+    
+    /// <#Description#>
     func animateIntialState() {
         if let firstItem = tabBarItems.first {
             let selectedIndex = 0
             let targetOffsetX = firstItem.center.x
             animate(selectedIndex, to: targetOffsetX, withDuration: 0.0)
+            applyWavyBottomMask(targetOffsetX)
         }
     }
-
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - selectedIndex: <#selectedIndex description#>
+    ///   - targetOffset: <#targetOffset description#>
+    ///   - duration: <#duration description#>
     private func animate(
         _ selectedIndex: Int,
         to targetOffset: CGFloat,
@@ -132,7 +156,12 @@ final class MyTabBar: UIView {
         animateCircle(to: targetOffset, withDuration: duration)
         animateWavyBottom(to: targetOffset, withDuration: duration)
     }
-
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - selectedIndex: <#selectedIndex description#>
+    ///   - offsetY: <#offsetY description#>
+    ///   - duration: <#duration description#>
     private func animateTabBarItem(
         _ selectedIndex: Int,
         to offsetY: CGFloat = -10,
@@ -142,7 +171,11 @@ final class MyTabBar: UIView {
             self.tabBarItems[selectedIndex].transform = CGAffineTransform(translationX: 0, y: offsetY)
         }
     }
-
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - targetOffsetX: <#targetOffsetX description#>
+    ///   - duration: <#duration description#>
     private func animateCircle(
         to targetOffsetX: CGFloat,
         withDuration duration: TimeInterval = 0.25
@@ -152,7 +185,10 @@ final class MyTabBar: UIView {
         }
     }
 
-    // Layer와 관련된 애니메이션은 모두 CAAnimation으로 해야 한다는 점을 기억하세요!
+    /// <#Description#>
+    /// - Parameters:
+    ///   - targetOffsetX: <#targetOffsetX description#>
+    ///   - duration: <#duration description#>
     private func animateWavyBottom(
         to targetOffsetX: CGFloat,
         withDuration duration: TimeInterval = 0.25
@@ -172,27 +208,27 @@ final class MyTabBar: UIView {
         maskLayer.add(animation, forKey: "pathAnimation")
         maskLayer.path = toPath
     }
-
-    private func updateTintColor() {
-        circle.tintColor = tintColor
-        tabBarItems.forEach { $0.tint = tintColor }
-        // 아이템의 강조 색상 프로퍼티만 수정할 경우, UI에 즉시 반영되지 않으므로,
-        // 현재 selectedIndex를 기반으로 버튼을 다시 로드하여 강조 색상을 업데이트합니다.
-        delegate?.tabBar(self, refresh: tabBarItems)
-    }
 }
 
 extension MyTabBar {
 
-    //
-    func setSelctedTab(_ selectedIndex: Int) {
+    /// <#Description#>
+    func updateTintColor(_ tintColor: UIColor) {
+        circle.tintColor = tintColor
+        tabBarItems.forEach { $0.setTintColor(tintColor) }
+    }
+
+    /// <#Description#>
+    /// - Parameter selectedIndex: <#selectedIndex description#>
+    func updateSelctedTab(_ selectedIndex: Int) {
         tabBarItems.forEach { item in
             item.applySelectionState(selectedIndex)
         }
     }
-
-    //
-    func setTabBarItems(_ items: [MyTabBarItem]) {
+    
+    /// <#Description#>
+    /// - Parameter items: <#items description#>
+    func updateTabBarItems(_ items: [MyTabBarItem]) {
         tabBarItems = items
         for item in items {
             item.addTarget(
@@ -204,7 +240,8 @@ extension MyTabBar {
         stackView.replaceArrangedSubviews(items)
     }
 
-    //
+    /// <#Description#>
+    /// - Parameter selectedIndex: <#selectedIndex description#>
     func reloadTabBarItem(_ selectedIndex: Int) {
         tabBarItems[selectedIndex].applySelectionState(selectedIndex)
     }
